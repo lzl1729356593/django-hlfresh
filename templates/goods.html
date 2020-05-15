@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ current_cag.cag_name }}-商品列表</title>
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+
+<body>
+    <div class="search_bar clearfix">
+        <a href="/index/" class="logo ss fl"><img src="/static/images/logo06.png"></a>
+        <div class="guest_cart fr">
+            <a href="/cart/show_cart/" class="cart_name fl">我的购物车</a>
+            <div class="goods_count fl">{{ cart_goods_count }}</div>
+            <ul class="cart_goods_show">
+                {% for cart_goods in cart_goods_list %}
+                    <li>
+                        <img src="/static/goods/{{ cart_goods.goods_img }}.jpg" alt="商品图片">
+                        {{ cart_goods.goods_name }}
+                        <div>{{ cart_goods.goods_num }}</div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="navbar_con">
+        <div class="navbar">
+            <h1 class="fl">全部商品分类</h1>
+        </div>
+    </div>
+
+    <div class="breadcrumb">
+        <a href="#">当前分类：</a>
+        <span></span>
+        <a href="#">{{ current_cag.cag_name }}</a>
+    </div>
+
+    <div class="main_wrap clearfix">
+        <div class="sort_bar"></div>
+        <ul class="goods_type_list clearfix">
+            {% for goods in page_data %}
+                <li>
+                    <a href="/detail/?id={{ goods.id }}"><img src="/static/goods/{{ goods.goods_img }}.jpg"></a>
+                    <div class="operate">
+                        <h4><a href="/detail/?id={{ goods.id }}">{{ goods.goods_name }}</a></h4>
+                        <span class="prize">￥{{ goods.goods_price }}</span>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="pagenation">
+        # ##########(has_previous如果有前一页，返回True)
+        {% if page_data.has_previous %}
+            # ##########(previous_page_number返回前一页的页码,？是分隔URL和查询，&是不同参数的间隔符)
+            <a href="?cag={{ cag_id }}&page={{ page_data.previous_page_number }}">上一页</a>
+        {% endif %}
+
+        # ##########(page_range基于1的页码范围迭代器，比如产生【1,2,3,4】)
+        {% for index in paginator.page_range %}
+            {% if index in page_data.number %}
+                <a href="?cag={{ cag_id }}&page={{ index }}" class="active">{{ index }}</a>
+            {% else %}
+                <a href="?cag={{ cag_id }}&page={{ index }}">{{ index }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_data.has_next %}
+            <a href="?cag={{ cag_id }}&page={{ page_data.next_page_number }}">下一页</a>
+        {% endif %}
+    </div>
+
+</body>
+
+
+</html>
