@@ -680,7 +680,7 @@ html,body{height:100%}
 .footer{
 	width:1200px;
 	border-top:2px solid #42ad46;
-	margin:30px 350px;
+	margin:30px auto;
 
 }
 

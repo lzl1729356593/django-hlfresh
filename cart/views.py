@@ -6,7 +6,7 @@ Description:cart应用中views
 """
 
 from django.shortcuts import render, redirect
-from django.template.defaultfilters import time
+import time
 
 from goods.models import GoodsCategory, GoodsInfo
 from cart.models import OrderGoods, OrderInfo
@@ -137,12 +137,12 @@ def submit_success(request):
     order_info = OrderInfo.objects.get(order_id=order_id)
 
     order_goods_list = OrderGoods.objects.filter(goods_order=order_info)
-    total_money = 0 # 商品总价
-    total_num = 0 # 商品总数量
+    total_money = 0  # 商品总价
+    total_num = 0  # 商品总数量
     for goods in order_goods_list:
         goods.total_money = goods.goods_num * goods.goods_info.goods_price
         total_money += goods.total_money
-        total_num = goods.goods_num
+        total_num += goods.goods_num
     return render(request, 'success.html', {'order_info': order_info,
                                             'order_goods_list': order_goods_list,
                                             'total_money': total_money,
